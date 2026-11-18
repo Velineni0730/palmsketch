@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PalmSketch for Android</title>
+<style>
+  :root { --ink:#15191F; --bg:#E6E9ED; --card:#fff; --accent:#2F5D8A; --muted:#5B6570; --bad:#B3412F; --ok:#2E7D5B; }
+  @media (prefers-color-scheme: dark) { :root { --ink:#E8ECF1; --bg:#14181D; --card:#1D2229; --accent:#6FA3D6; --muted:#9AA5B1; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 640px; margin: 0 auto; padding: 32px 20px 60px; }
+  h1 { font-size: 32px; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 24px; }
+  .card { background: var(--card); border-radius: 14px; padding: 22px; margin-bottom: 18px; }
+  a.btn { display:inline-block; background:var(--accent); color:#fff; padding:15px 28px; border-radius:11px; font-weight:700; text-decoration:none; font-size:18px; }
+  a.btn.off { opacity:.4; pointer-events:none; }
+  #state { margin-top:12px; font-size:15px; color:var(--muted); }
+  ol { padding-left: 20px; margin: 8px 0 0; }
+  li { margin-bottom: 8px; }
+  code { background: rgba(127,127,127,.18); padding: 1px 6px; border-radius: 5px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>PalmSketch</h1>
+  <p class="sub">Stylus drawing with palm rejection. Android APK for Samsung tablets and phones.</p>
+
+  <div class="card">
+    <a id="dl" class="btn off" href="apk/palmsketch.apk" download>Download APK</a>
+    <div id="state">Checking for the APK file</div>
+  </div>
+
+  <div class="card">
+    <strong>Install on your Samsung device</strong>
+    <ol>
+      <li>Open this page in Samsung Internet or Chrome on the tablet or phone, using the address your computer printed (it starts with <code>http://192.168</code> or similar).</li>
+      <li>Tap Download APK. If asked, allow the browser to install apps from this source.</li>
+      <li>Open the downloaded file and tap Install. If Play Protect warns about an unknown app, tap More details, then Install anyway.</li>
+      <li>Open PalmSketch. Do the circle setup: stylus first, then your hand.</li>
+    </ol>
+  </div>
+</main>
+<script>
+  fetch('apk/palmsketch.apk', { method: 'HEAD' }).then(function (r) {
+    var s = document.getElementById('state'), b = document.getElementById('dl');
+    if (r.ok) {
+      var mb = (Number(r.headers.get('content-length')) / 1048576).toFixed(1);
+      s.textContent = 'palmsketch.apk is ready' + (mb > 0 ? ' (' + mb + ' MB)' : '');
+      b.classList.remove('off');
+    } else { throw new Error('missing'); }
+  }).catch(function () {
+    var s = document.getElementById('state');
+    s.style.color = 'var(--bad)';
+    s.textContent = 'No APK found yet. Put the file at apk/palmsketch.apk next to this page, then refresh.';
+  });
+</script>
+</body>
+</html>
